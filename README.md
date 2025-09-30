@@ -1,7 +1,10 @@
-# Convex + TypeScript + ESLint
+# Convex Task Manager Demo
+
+Simple backend example website demonstrating Convex real-time database with CRUD operations.
 
 ![Dashboard](./iScreen%20Shoter%20-%20Google%20Chrome%20-%20250930145118.png)
 ![Demo](./iScreen%20Shoter%20-%20Google%20Chrome%20-%20250930145155.png)
+![Backend](./iScreen%20Shoter%20-%20Google%20Chrome%20-%20250930145448.png)
 
 This template provides a minimal setup to get Convex working, with TypeScript
 and ESLint.
