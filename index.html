@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Task Manager - Convex Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .add-task {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        .task.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+        .task-text {
+            flex: 1;
+            font-size: 16px;
+        }
+        .delete-btn {
+            background: #dc3545;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .connecting {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Task Manager</h1>
+        <div id="status" class="status connecting">Connecting to Convex...</div>
+
+        <div class="add-task">
+            <input type="text" id="taskInput" placeholder="Enter a new task..." />
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <div id="tasks"></div>
+    </div>
+
+    <script type="module">
+        // This is a simple demo showing how to interact with Convex
+        // In a real app, you'd use the Convex React client or HTTP API
+
+        let tasks = [];
+
+        // Simulate connecting to Convex
+        setTimeout(() => {
+            document.getElementById('status').className = 'status connected';
+            document.getElementById('status').textContent = 'Connected to Convex! (Demo Mode)';
+            loadTasks();
+        }, 1000);
+
+        // Demo functions (in real app, these would call Convex functions)
+        function loadTasks() {
+            // Simulate loading tasks from Convex
+            tasks = [
+                { _id: '1', text: 'Welcome to Convex!', isCompleted: false, createdAt: Date.now() - 1000 },
+                { _id: '2', text: 'Try adding your own task', isCompleted: false, createdAt: Date.now() - 500 }
+            ];
+            renderTasks();
+        }
+
+        window.addTask = function() {
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+
+            if (text) {
+                const newTask = {
+                    _id: Date.now().toString(),
+                    text: text,
+                    isCompleted: false,
+                    createdAt: Date.now()
+                };
+
+                tasks.unshift(newTask);
+                input.value = '';
+                renderTasks();
+            }
+        }
+
+        window.toggleTask = function(id) {
+            const task = tasks.find(t => t._id === id);
+            if (task) {
+                task.isCompleted = !task.isCompleted;
+                renderTasks();
+            }
+        }
+
+        window.deleteTask = function(id) {
+            tasks = tasks.filter(t => t._id !== id);
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('tasks');
+            container.innerHTML = tasks.map(task => `
+                <div class="task ${task.isCompleted ? 'completed' : ''}">
+                    <input type="checkbox" ${task.isCompleted ? 'checked' : ''}
+                           onchange="toggleTask('${task._id}')">
+                    <span class="task-text">${task.text}</span>
+                    <button class="delete-btn" onclick="deleteTask('${task._id}')">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        // Allow Enter key to add tasks
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
+</body>
+</html>
