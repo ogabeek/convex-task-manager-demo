@@ -1,5 +1,8 @@
 # Convex + TypeScript + ESLint
 
+![Dashboard](./iScreen%20Shoter%20-%20Google%20Chrome%20-%20250930145118.png)
+![Demo](./iScreen%20Shoter%20-%20Google%20Chrome%20-%20250930145155.png)
+
 This template provides a minimal setup to get Convex working, with TypeScript
 and ESLint.
 
